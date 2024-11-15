@@ -24,15 +24,20 @@ function create_s (bounceBall: Sprite, goLeft: boolean) {
     ball.setPosition(bounceBall.x, bounceBall.y)
     ball.setBounceOnWall(true)
     ball.ay = 100
-    ball.vy = -24
+    ball.vy = 99
     if (goLeft) {
-        ball.vx = -80
-    } else {
         ball.vx = 80
+    } else {
+        ball.vx = -80
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    list = sprites.allOfKind(SpriteKind.Projectile)
+    for (let value of list) {
+        sprites.destroy(value, effects.fire, 200)
+    }
     projectile = sprites.createProjectileFromSprite(img`
+        ...
         ...
         ...
         ...
@@ -42,119 +47,118 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         .f.
         fff
         fff
-        f1f
-        .2.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
-        .1.
+        .8.
+        .f.
+        ..2
+        .f.
+        .f.
+        .f.
+        2..
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        ..2
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        2..
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        ..2
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        2..
+        .8.
+        .8.
+        .8.
+        .8.
+        ..2
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        2..
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        ..2
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        2..
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        .8.
+        ..2
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        2..
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .f.
+        .8.
+        .8.
+        .f.
+        ...
+        ...
+        ...
+        ...
         ..1
-        `, mySprite, 7, -101)
+        `, mySprite, 0, -101)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.bounce, function (sprite, otherSprite) {
     sprites.destroy(sprite)
@@ -185,6 +189,10 @@ function create_bounce () {
     ball.ay = 100
     ball.vx = 89
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.m, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    sprites.destroy(otherSprite, effects.hearts, 500)
+})
 function create_m (sBall: Sprite, goLeft: boolean) {
     ball = sprites.create(img`
         . . . . . . . . . . . . . . . 
@@ -206,11 +214,11 @@ function create_m (sBall: Sprite, goLeft: boolean) {
     ball.setPosition(sBall.x, sBall.y)
     ball.setBounceOnWall(true)
     ball.ay = 100
-    ball.vy = -24
+    ball.vy = -99
     if (goLeft) {
-        ball.vx = -80
-    } else {
         ball.vx = 80
+    } else {
+        ball.vx = -80
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.s, function (sprite, otherSprite) {
@@ -220,9 +228,10 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.s, function (sprite, otherSp
     sprites.destroy(otherSprite)
 })
 let projectile: Sprite = null
+let list: Sprite[] = []
 let ball: Sprite = null
 let mySprite: Sprite = null
-scene.setBackgroundColor(2)
+scene.setBackgroundColor(4)
 mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -245,3 +254,12 @@ mySprite.bottom = 100
 mySprite.setStayInScreen(true)
 controller.moveSprite(mySprite, 100, 0)
 create_bounce()
+game.onUpdate(function () {
+    list = sprites.allOfKind(SpriteKind.Projectile)
+    for (let value of list) {
+        if (value.top <= 0) {
+            projectile.vy = 0
+            projectile.top = 0
+        }
+    }
+})
