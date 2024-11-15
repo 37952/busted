@@ -231,7 +231,7 @@ let projectile: Sprite = null
 let list: Sprite[] = []
 let ball: Sprite = null
 let mySprite: Sprite = null
-scene.setBackgroundColor(4)
+scene.setBackgroundColor(1)
 mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
