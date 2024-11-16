@@ -2,6 +2,35 @@ namespace SpriteKind {
     export const bounce = SpriteKind.create()
     export const s = SpriteKind.create()
     export const m = SpriteKind.create()
+    export const all = SpriteKind.create()
+}
+function create_all (mBall: Sprite, go_left: boolean) {
+    ball = sprites.create(img`
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . 3 3 3 3 3 3 3 . . . . . 
+        . . . 3 2 2 2 2 2 3 . . . . . 
+        . . . 3 2 5 5 5 2 3 . . . . . 
+        . . . 3 2 5 5 5 2 3 . . . . . 
+        . . . 3 2 5 5 5 2 3 . . . . . 
+        . . . 3 2 2 2 2 2 3 . . . . . 
+        . . . 3 3 3 3 3 3 3 . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . 
+        `, SpriteKind.all)
+    ball.setPosition(mBall.x, mBall.y)
+    ball.setBounceOnWall(true)
+    ball.ay = 100
+    ball.vy = -99
+    if (go_left) {
+        ball.vx = 80
+    } else {
+        ball.vx = -80
+    }
 }
 function create_s (bounceBall: Sprite, goLeft: boolean) {
     ball = sprites.create(img`
@@ -160,11 +189,21 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         ..1
         `, mySprite, 0, -101)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bounce, function (sprite, otherSprite) {
+    create_bounce()
+    sprites.destroy(otherSprite)
+    info.changeLifeBy(-1)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.bounce, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     create_s(otherSprite, true)
     create_s(otherSprite, false)
     sprites.destroy(otherSprite)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.s, function (sprite, otherSprite) {
+    create_bounce()
+    sprites.destroy(otherSprite)
+    info.changeLifeBy(-1)
 })
 function create_bounce () {
     ball = sprites.create(img`
@@ -191,7 +230,9 @@ function create_bounce () {
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.m, function (sprite, otherSprite) {
     sprites.destroy(sprite)
-    sprites.destroy(otherSprite, effects.hearts, 500)
+    create_all(otherSprite, true)
+    create_all(otherSprite, true)
+    sprites.destroy(otherSprite)
 })
 function create_m (sBall: Sprite, goLeft: boolean) {
     ball = sprites.create(img`
@@ -226,6 +267,15 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.s, function (sprite, otherSp
     create_m(otherSprite, true)
     create_m(otherSprite, false)
     sprites.destroy(otherSprite)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.all, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    sprites.destroy(otherSprite, effects.hearts, 500)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.m, function (sprite, otherSprite) {
+    create_bounce()
+    sprites.destroy(otherSprite)
+    info.changeLifeBy(-1)
 })
 let projectile: Sprite = null
 let list: Sprite[] = []
